@@ -4,7 +4,7 @@ import time
 
 
 
-PATH = "C:\Program Files (x86)\chromedriver.exe" #path of the chrome driver
+PATH = "Your path" #Enter the path of the chrome driver
 driver = webdriver.Chrome(PATH)
 
 #open a file
@@ -38,10 +38,29 @@ tab = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/main/div/div/d
 tab.click()
 driver.implicitly_wait(5)
 
-#scrap data and write to the file
-tweets = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/main")
-driver.find_elements_by_class_name("css-901oao r-hkyrab r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0")
-f.write(tweets.text)
+#scroll down
+SCROLL= 2.0
+last_height = driver.execute_script("return document.body.scrollHeight")
+
+while True:
+    time.sleep(SCROLL)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+	
+    driver.implicitly_wait(2)
+    time.sleep(SCROLL)
+    new_height = driver.execute_script("return document.body.scrollHeight")
+    driver.implicitly_wait(2)
+    if new_height == last_height:
+        break
+    last_height = new_height
+driver.implicitly_wait(10)
+
+
+#scrap the tweets and write to the file
+data = driver.find_elements_by_css_selector('[data-testid="tweet"]')
+for item in data:
+    f.write(item.text)
+
 
 
 #close the file
