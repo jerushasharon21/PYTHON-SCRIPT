@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import csv
 
 
 
@@ -8,7 +9,7 @@ PATH = "Your path" #Enter the path of the chrome driver
 driver = webdriver.Chrome(PATH)
 
 #open a file
-fname= "data_1.txt"
+fname= "data_1.csv"
 f = open(fname, "a", encoding="utf-8")
 
 #open twitter on the web browser
@@ -34,7 +35,7 @@ profile.click()
 driver.implicitly_wait(5)
 
 #navigate to tweets and replies
-tab = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/main/div/div/div/div/div/div[2]/div/div/nav/div/div[2]/div/div[2]/a/div/span")
+tab = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/main/div/div/div/div/div/div/div[2]/div/div/nav/div/div[2]/div/div[2]")
 tab.click()
 driver.implicitly_wait(5)
 
@@ -53,13 +54,11 @@ while True:
     if new_height == last_height:
         break
     last_height = new_height
-driver.implicitly_wait(10)
-
-
+    driver.implicitly_wait(10)
 #scrap the tweets and write to the file
-data = driver.find_elements_by_css_selector('[data-testid="tweet"]')
-for item in data:
-    f.write(item.text)
+    data = driver.find_elements_by_css_selector('[data-testid="tweet"]')
+    for item in data:
+        f.write(item.text)
 
 
 
