@@ -58,7 +58,7 @@ while True:
 #scrap the tweets and write to the file
     data = driver.find_elements_by_css_selector('[data-testid="tweet"]')
     for item in data:
-        f.write(item.text)
+        f.write(str(item.text))
 
 
 
